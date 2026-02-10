@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Newsletter Dashboard - Latest articles from Ben's Bites and The AI Rundown">
+    <title>AI Newsletter Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo" aria-label="AI Newsletter Dashboard">AI</h1>
+            <div class="header-meta">
+                <span class="last-updated" id="lastUpdated">Loading...</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Filter Bar -->
+    <nav class="filter-bar" aria-label="Article filters">
+        <div class="container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all" aria-label="Show all articles">
+                    All
+                </button>
+                <button class="filter-btn" data-filter="bens_bites" aria-label="Filter by Ben's Bites">
+                    Ben's Bites
+                </button>
+                <button class="filter-btn" data-filter="ai_rundown" aria-label="Filter by The AI Rundown">
+                    The AI Rundown
+                </button>
+            </div>
+            
+            <div class="saved-toggle">
+                <label for="savedOnlyToggle" class="toggle-label">
+                    <input type="checkbox" id="savedOnlyToggle" aria-label="Show saved only">
+                    <span class="toggle-text">Saved Only</span>
+                </label>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Loading State -->
+            <div class="loading" id="loadingState" aria-live="polite">
+                <div class="loading-spinner"></div>
+                <p>Fetching latest articles...</p>
+            </div>
+
+            <!-- Error State -->
+            <div class="error-state" id="errorState" style="display: none;" role="alert">
+                <p>Unable to load articles. Please check that you've run <code>python scrape_all.py</code></p>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <p>No articles found matching your filters.</p>
+            </div>
+
+            <!-- Articles Grid -->
+            <div class="articles-grid" id="articlesGrid" aria-live="polite">
+                <!-- Articles will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
