@@ -51,12 +51,31 @@ A beautiful, interactive dashboard that displays the latest AI newsletter articl
    ```bash
    python3 scrape_all.py
    ```
+   This will create `.tmp/articles.json` with the latest articles.
 
-4. **Open the dashboard**:
+4. **Start the local server**:
    ```bash
-   open index.html
+   python3 server.py
    ```
-   Or navigate to: `file:///path/to/scraper/index.html`
+   
+5. **Open the dashboard**:
+   - The server will start on `http://localhost:8080`
+   - Open your browser and navigate to: **http://localhost:8080**
+   - You should see the beautiful Bento Grid dashboard with articles!
+
+> **Note**: You must use the local server (`server.py`) instead of opening `index.html` directly. Opening the HTML file directly will cause CORS errors when loading articles.
+
+### Quick Commands
+
+```bash
+# Scrape latest articles
+python3 scrape_all.py
+
+# Start dashboard server
+python3 server.py
+
+# Then open http://localhost:8080 in your browser
+```
 
 ## 📂 Project Structure
 
@@ -66,6 +85,7 @@ scraper/
 ├── styles.css              # Bento Grid styles and design system
 ├── app.js                  # Dashboard JavaScript
 ├── scrape_all.py           # Main scraper orchestration
+├── server.py               # Local HTTP server (port 8080)
 ├── .gitignore              # Git ignore rules
 ├── .env                    # Environment variables (create your own)
 │
