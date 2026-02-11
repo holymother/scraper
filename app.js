@@ -19,10 +19,18 @@ let showSavedOnly = false;
 const STORAGE_KEY = 'ai-newsletter-saved-articles';
 
 // ============ Initialize ============
-document.addEventListener('DOMContentLoaded', () => {
+// Support both early and late script loading
+if (document.readyState === 'loading') {
+    // Still loading, wait for DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', () => {
+        loadArticles();
+        setupEventListeners();
+    });
+} else {
+    // DOM already loaded, run immediately
     loadArticles();
     setupEventListeners();
-});
+}
 
 // ============ Event Listeners ============
 function setupEventListeners() {
