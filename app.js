@@ -10,6 +10,9 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 // Initialize Supabase client
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// Initialization flag to prevent double loading
+let isInitialized = false;
+
 // ============ State Management ============
 let allArticles = [];
 let currentFilter = 'all';
@@ -23,13 +26,19 @@ const STORAGE_KEY = 'ai-newsletter-saved-articles';
 if (document.readyState === 'loading') {
     // Still loading, wait for DOMContentLoaded
     document.addEventListener('DOMContentLoaded', () => {
-        loadArticles();
-        setupEventListeners();
+        if (!isInitialized) {
+            isInitialized = true;
+            loadArticles();
+            setupEventListeners();
+        }
     });
 } else {
     // DOM already loaded, run immediately
-    loadArticles();
-    setupEventListeners();
+    if (!isInitialized) {
+        isInitialized = true;
+        loadArticles();
+        setupEventListeners();
+    }
 }
 
 // ============ Event Listeners ============
