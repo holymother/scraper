@@ -1,0 +1,14 @@
+Colors
+Primary:#FAF2E8
+Accent:#FF9C94
+Background:#FAF2E8
+Text Primary:#242424
+Link:#FF9C94
+Fonts
+Figtree(body)
+Typography
+primary: Figtree
+heading: Figtree
+h1: 173.867px
+h2: 16px
+body: 23.4667px

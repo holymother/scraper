@@ -3,6 +3,13 @@
  * Handles article loading, filtering, and save functionality
  */
 
+// ============ Supabase Client ============
+const SUPABASE_URL = 'https://yrsphamotsgcngtzolwt.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlyc3BoYW1vdHNnY25ndHpvbHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3NzUxNjYsImV4cCI6MjA4NjM1MTE2Nn0.MGll6bTRgpZW9ek2mPFFF1X6BtxdWXCWfkRd1J-Afog';
+
+// Initialize Supabase client
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 // ============ State Management ============
 let allArticles = [];
 let currentFilter = 'all';
@@ -44,13 +51,38 @@ async function loadArticles() {
     const errorState = document.getElementById('errorState');
 
     try {
-        const response = await fetch('.tmp/articles.json');
+        console.log('🔄 Fetching articles from Supabase...');
 
-        if (!response.ok) {
-            throw new Error('Failed to load articles');
+        // Fetch from Supabase instead of local JSON
+        const { data: articles, error } = await supabase
+            .from('articles')
+            .select('*')
+            .order('scraped_at', { ascending: false })
+            .limit(100);
+
+        if (error) {
+            throw new Error(`Supabase error: ${error.message}`);
         }
 
-        allArticles = await response.json();
+        if (!articles || articles.length === 0) {
+            throw new Error('No articles found in database');
+        }
+
+        console.log(`✅ Loaded ${articles.length} articles from Supabase`);
+
+        // Transform Supabase data to match our schema
+        allArticles = articles.map(article => ({
+            id: article.article_id,
+            title: article.title,
+            description: article.description,
+            url: article.url,
+            publishedAt: article.published_at,
+            scrapedAt: article.scraped_at,
+            imageUrl: article.image_url,
+            category: article.category,
+            source: article.source,
+            saved: false  // Will be updated from LocalStorage below
+        }));
 
         // Load saved article IDs from LocalStorage
         const savedArticles = getSavedArticles();
@@ -71,6 +103,12 @@ async function loadArticles() {
         console.error('Error loading articles:', error);
         loadingState.style.display = 'none';
         errorState.style.display = 'block';
+
+        // Update error message to be more helpful
+        const errorText = document.querySelector('#errorState p');
+        if (errorText) {
+            errorText.textContent = `Unable to load articles from database. ${error.message}`;
+        }
     }
 }
 
