@@ -7,8 +7,8 @@
 const SUPABASE_URL = 'https://yrsphamotsgcngtzolwt.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlyc3BoYW1vdHNnY25ndHpvbHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3NzUxNjYsImV4cCI6MjA4NjM1MTE2Nn0.MGll6bTRgpZW9ek2mPFFF1X6BtxdWXCWfkRd1J-Afog';
 
-// Initialize Supabase client
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Initialize Supabase client (named supabaseClient to avoid shadowing library)
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Initialization flag to prevent double loading
 let isInitialized = false;
@@ -71,7 +71,7 @@ async function loadArticles() {
         console.log('🔄 Fetching articles from Supabase...');
 
         // Fetch from Supabase instead of local JSON
-        const { data: articles, error } = await supabase
+        const { data: articles, error } = await supabaseClient
             .from('articles')
             .select('*')
             .order('scraped_at', { ascending: false })
